@@ -1,0 +1,78 @@
+#!/bin/bash
+
+# Menu
+#!/bin/bash
+
+echo
+echo
+echo "+-----------------+"
+echo "|                 |"
+echo "|   VPN-Selector  |"
+echo "|                 |"
+echo "+-----------------+"
+echo  
+echo -e "\e[1mVPN List\e[0m"
+echo
+echo "[1] Hack The Box - Academy TCP"
+echo "[2] Hack The Box - Academy UDP"
+echo "[3] Hack The Box - Labs"
+echo "[4] Offsec - Proving Grounds"
+echo
+
+# Input Select
+echo
+read -p $'\e[1;34mSelect the VPN you want:\e[0m ' selection
+
+# VPN File Paths
+file_path1='/home/kali/Desktop/academy-regular-TCP.ovpn'  
+file_path2="/home/kali/Desktop/academy-regular-UDP.ovpn"
+file_path3="/home/kali/Desktop/htb-lab_frznram.ovpn"
+file_path4="/home/kali/Desktop/offsec.ovpn"
+
+# Check if there is an active VPN connection
+if pgrep openvpn > /dev/null
+then
+    echo
+    echo "An OpenVPN connection is currently active."
+    echo
+    read -p $'\e[1;31mTerminate existing VPN connection (Y) or Exit (E):\e[0m ' decision
+    decision=$(echo "$decision" | tr '[:lower:]' '[:upper:]')  # convert input to uppercase
+    
+    case $decision in
+        Y|YES )
+            echo "Terminating existing VPN connections..."
+            sudo pkill openvpn
+            ;;
+        E|EXIT )
+            echo "Exiting script..."
+            exit 0
+            ;;
+        * )
+            echo "Invalid selection."
+            exit 1
+            ;;
+    esac
+else
+    echo
+    echo -e "\e[1mNo active OpenVPN connection found - commencing connection\e[0m"
+    echo
+fi
+
+# Match selection to filepath to build command
+case $selection in
+    1)
+        sudo openvpn $file_path1
+        ;;
+    2)
+        sudo openvpn $file_path2
+        ;;
+    3)
+        sudo openvpn $file_path3
+        ;;
+    4)
+        sudo openvpn $file_path4
+        ;;
+    *)
+        echo "Invalid selection."
+        ;;
+esac
