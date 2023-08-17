@@ -1,5 +1,5 @@
 # VPN-Select
-Simple bash script to simplify selecting VPN when you have multiple connection files.
+Simple bash script to simplify the selection of VPN's when you have multiple connection files.
 
 A list of directories for VPN config files and the corresponding description can be found in the source code and updated. 
 
